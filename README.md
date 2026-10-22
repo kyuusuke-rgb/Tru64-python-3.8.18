@@ -11,7 +11,7 @@ Target: alphaev56-dec-osf5.1b
    are statically embedded into the main binary.
 
    Statically built-in modules include:
-    - _ssl (OpenSSL 1.1.1)
+    - _ssl (OpenSSL 1.1.1), hashlib (md5, sha1, sha256, sha512, sha3, blake2)
     - zlib
     - _socket, select
     - _json, _csv, _struct
@@ -34,6 +34,6 @@ Target: alphaev56-dec-osf5.1b
    Test the installation using:
 
      # /usr/local/bin/python3 -V
-     # /usr/local/bin/python3 -c "import math, json, datetime, ssl; print('Python 3.8 on Tru64 works! OpenSSL:', ssl.OPENSSL_VERSION)"
+     # /usr/local/bin/python3 -c "import math, json, datetime, ssl, hashlib; print('Python 3.8 on Tru64 works!')"
 ===================================================================
 ```
