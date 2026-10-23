@@ -1,0 +1,68 @@
+===================================================================
+Python 3.8.18 for Tru64 UNIX V5.1B - Binary Package
+Target: alphaev56-dec-osf5.1b
+===================================================================
+1. DESCRIPTION
+   This package contains Python 3.8.18 built natively for
+   Tru64 UNIX V5.1B on DEC Alpha EV56 using GCC 4.7.4.
+   To work around dynamic extension loading issues encountered
+   on OSF/1, key C extensions are statically embedded into the
+   Python executable.
+   Statically built-in modules include:
+     - _ssl (OpenSSL 1.1.1)
+     - hashlib support (MD5, SHA-1, SHA-2, SHA-3 and BLAKE2)
+     - pyexpat
+     - zlib
+     - _socket, select
+     - _json, _csv, _struct
+     - _datetime, _pickle, _asyncio
+     - math, cmath, unicodedata
+     - and additional core modules
+2. EXTRACT AND INSTALL
+   Run the following commands as root to extract the package
+   into /usr/local:
+     # cd /usr/local
+     # gzip -dc /path/to/Tru64_Python_3.8.18_static.tar.gz \
+         | /sbin/tar xvf -
+3. ENVIRONMENT SETUP
+   Add the following lines to .profile:
+     export PATH=/usr/local/bin:$PATH
+     export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/ssl/lib:$LD_LIBRARY_PATH
+4. VERIFICATION
+   Basic version check:
+     # /usr/local/bin/python3 -V
+   Installed environment verification:
+     # /usr/local/bin/python3 -c "
+     import sys, ssl, hashlib, pyexpat
+     print('Python:', sys.version.split()[0])
+     print('OpenSSL:', ssl.OPENSSL_VERSION)
+     print('SHA256:', hashlib.sha256(b'Tru64').hexdigest())
+     print('pyexpat:', pyexpat.__name__)
+     print('=== INSTALL VERIFIED ===')
+     " && /usr/local/bin/pip3 --version
+   Verified output:
+     Python: 3.8.18
+     OpenSSL: OpenSSL 1.1.1  11 Sep 2018
+     SHA256: 50b8bbb3bdbe5d316ad31082c5cd5d74f86430ffe0e396bdb08c69d73ad5fee4
+     pyexpat: pyexpat
+     === INSTALL VERIFIED ===
+     pip 23.0.1 from /usr/local/lib/python3.8/site-packages/pip (python 3.8)
+5. ADDITIONAL VERIFIED FUNCTIONALITY
+   The installed interpreter was also verified with:
+     - Core statically linked module imports
+     - zlib compression and decompression
+     - SSLContext creation using OpenSSL 1.1.1
+     - HTTPS access using urllib.request
+     - CA certificate verification using:
+         /usr/local/share/cacert.pem
+     - HTTPS response from www.google.com:
+         HTTP 200
+         100 bytes received
+6. KNOWN LIMITATIONS
+   This is a platform-specific static-core build for Tru64 UNIX.
+   It is not intended to provide every optional CPython extension.
+   Dynamic extension loading may fail with:
+     dlopen: Cannot map library
+   Applications requiring unavailable optional extensions may need
+   additional porting or static integration.
+===================================================================
