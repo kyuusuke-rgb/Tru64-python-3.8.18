@@ -82,4 +82,16 @@ Target: alphaev56-dec-osf5.1b
      dlopen: Cannot map library
    Applications requiring unavailable optional extensions (e.g. _sqlite3)
    may need additional porting or static integration.
+
+7. BUNDLED & INTEGRATED LIBRARIES
+   This static binary distribution incorporates the following library versions:
+     - GCC Compiler:      4.7.4 (alphaev56-dec-osf5.1b)
+     - OpenSSL:           1.1.1 (11 Sep 2018)
+     - Foreign Function:  libffi 3.2.1 (statically linked for _ctypes)
+     - Compression:       zlib 1.2.x
+     - XML Parser:        Expat (pyexpat)
+
+   Note: All C extensions and supporting libraries listed above are statically 
+   linked into the main Python executable or shipped within /usr/local/lib 
+   to eliminate external shared library dependency issues on OSF/1.
 ===================================================================
