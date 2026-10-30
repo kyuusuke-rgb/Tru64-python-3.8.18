@@ -23,18 +23,33 @@ Target: alphaev56-dec-osf5.1b
      - and additional core modules
 
 2. EXTRACT AND INSTALL
-   Run the following commands as root to extract the package
-   into /usr/local:
 
-     # cd /usr/local
-     # gzip -dc /path/to/python3818_ctypes_tru64.tar.gz \
-         | /sbin/tar xvf -
+The archive contains paths beginning with usr/local/.
+Therefore, extract it from the filesystem root:
+
+  # cd /
+  # gzip -dc /path/to/python3818_ctypes_tru64.tar.gz \
+      | /sbin/tar xvf -
+
+Do NOT extract this archive from /usr/local, or files will be
+installed under /usr/local/usr/local.
 
 3. ENVIRONMENT SETUP
-   Add the following lines to .profile:
 
-     export PATH=/usr/local/bin:$PATH
-     export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/ssl/lib:$LD_LIBRARY_PATH
+Add the following lines to the shell environment:
+
+  export PATH=/usr/local/bin:$PATH
+  export LD_LIBRARY_PATH=/usr/local/lib:/usr/local/ssl/lib:$LD_LIBRARY_PATH
+
+For HTTPS certificate verification, configure a current CA bundle:
+
+  export SSL_CERT_FILE=/usr/local/share/certs/cacert.pem
+
+The CA bundle is not automatically selected by this Python/OpenSSL
+build. Without SSL_CERT_FILE, urllib HTTPS requests may fail with:
+
+  ssl.SSLCertVerificationError:
+  certificate verify failed: unable to get local issuer certificate
 
 4. VERIFICATION
    Basic version check:
@@ -61,19 +76,42 @@ Target: alphaev56-dec-osf5.1b
      pip 23.0.1 from /usr/local/lib/python3.8/site-packages/pip (python 3.8)
 
 5. ADDITIONAL VERIFIED FUNCTIONALITY
-   The installed interpreter was also verified with:
-     - Core statically linked module imports
-     - ctypes functionality:
-         - C library function calls (libc.so: strlen, getenv, abs, etc.)
-         - Pointer arithmetic and memory manipulation via pointer()
-         - Native 64-bit Alpha register/stack argument passing via libffi 3.2.1
-     - zlib compression and decompression
-     - SSLContext creation using OpenSSL 1.1.1
-     - HTTPS access using urllib.request
-     - CA certificate verification using:
-         /usr/local/share/cacert.pem
-     - HTTPS response from www.google.com:
-         HTTP 200
+
+The installed interpreter was verified with:
+
+  - Core statically linked module imports
+  - ctypes functionality
+  - Native 64-bit Alpha pointer size: 8 bytes
+  - zlib 1.2.8
+  - SSLContext using OpenSSL 1.1.1
+  - pip 23.0.1
+  - urllib.request HTTPS access
+  - CA certificate verification using:
+      /usr/local/share/certs/cacert.pem
+  - HTTPS request to:
+      https://github.com/
+  - Verified response:
+      HTTP 200
+
+RESTORE TEST
+
+The binary package was restore-tested on a separate Tru64 UNIX
+V5.1B + PK8 installation running under the ES40 emulator.
+
+Verified after restoration:
+
+  Python 3.8.18
+  pip 23.0.1
+  OpenSSL 1.1.1
+  ctypes / static libffi 3.2.1
+  64-bit pointer size: 8 bytes
+  hashlib SHA-256
+  pyexpat
+  zlib 1.2.8
+  socket
+  select
+  json
+  CA-verified HTTPS to github.com (HTTP 200)
 
 6. KNOWN LIMITATIONS
    This is a platform-specific static-core build for Tru64 UNIX.
