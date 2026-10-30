@@ -1,7 +1,7 @@
 ===================================================================
 Python 3.8.18 for Tru64 UNIX V5.1B - Binary Package (with ctypes)
-Target: alphaev56-dec-osf5.1b
-Modern Tru64 UNIX V5.1B userland: built on real Alpha hardware, restore-tested with the ES40 emulator
+Target: alphaev56-dec-osf5.1b 
+Built on physical Alpha hardware and restore-tested on ES40 emulator/ Tru64 V5.1B + PK8
 ===================================================================
 
 1. DESCRIPTION
